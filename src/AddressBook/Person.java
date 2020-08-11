@@ -3,6 +3,7 @@ package AddressBook;
 import java.util.*;
 
 public class Person {
+
     String firstName;
     String lastName;
     String address;
@@ -10,18 +11,6 @@ public class Person {
     String state;
     Integer zip;
     Long phone;
-
-    public Person(){}
-
-    public Person(String firstName, String lastName, String address, String city, String state, Integer zip, Long phone) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.city = city;
-        this.state = state;
-        this.zip = zip;
-        this.phone = phone;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -78,4 +67,26 @@ public class Person {
     public void setPhone(Long phone) {
         this.phone = phone;
     }
+
+
+
+    public Person() {
+    }
+
+    public Person(String firstName, String lastName, String address, String city, String state, Integer zip,
+            Long phone) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
+        this.phone = phone;
+    }
+
+    @Override
+    public String toString() {
+        return "firstName: " + firstName + " \nlastName: " + lastName + " \naddress: " + address + " \ncity: " + city
+                + " \nstate: " + state + " \nZip: " + zip + " \nphone: " + phone;
+    }    
 }
