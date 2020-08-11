@@ -10,14 +10,16 @@ public class AddressBookMain {
 
         System.out.println("\nWelcome to AddressBook");
 
-        Map<String, List<Object>> addressBook = new TreeMap<>();
+        Map<String, List<Object>> addressBook = new HashMap<>();
 
         System.out.println("\nwant to edit the Address Book");
         System.out.println("enter true for Yes or false for No");
         boolean choice = sc.nextBoolean();
         if (choice) {
-            editingAddressBook(addressBook, sc);
+            addressBook = editingAddressBook(addressBook, sc);
         }
+
+        checkingForEquals(addressBook);
 
     }
 
@@ -27,7 +29,7 @@ public class AddressBookMain {
      * @param addressBook map containing the info of the contact Person
      * @return addressBook
      */
-    private static Map<String, List<Object>> editingAddressBook(Map<String, List<Object>> addressBook, Scanner sc) {
+    public static Map<String, List<Object>> editingAddressBook(Map<String, List<Object>> addressBook, Scanner sc) {
 
         System.out.println("If you want to Add something enter \'A\'");
         System.out.println("If you want to edit the existing record enter \'E\'");
@@ -40,7 +42,7 @@ public class AddressBookMain {
             sc.nextLine();
             String name = sc.nextLine();
             editAddressInfo(addressBook, sc, name);
-        }else if(editChoice == 'D'){
+        } else if (editChoice == 'D') {
             System.out.println("whose info you want to delete");
             sc.nextLine();
             String name = sc.nextLine();
@@ -60,6 +62,7 @@ public class AddressBookMain {
 
     /**
      * function to add a person in an addressBook.
+     * 
      * @param addressBook
      * @param sc
      * @return addressBook with the new person.
@@ -89,14 +92,10 @@ public class AddressBookMain {
         System.out.print("\nPhone :- ");
         Long phone = sc.nextLong();
 
+        Person person = new Person(firstName, lastName, address, city, state, zip, phone);
+
         List<Object> ContactPerson = new ArrayList<>();
-        ContactPerson.add(firstName);
-        ContactPerson.add(lastName);
-        ContactPerson.add(address);
-        ContactPerson.add(city);
-        ContactPerson.add(state);
-        ContactPerson.add(zip);
-        ContactPerson.add(phone);
+        ContactPerson.add(person);
 
         String name = firstName + " " + lastName;
 
@@ -108,9 +107,10 @@ public class AddressBookMain {
 
     /**
      * function to edit the existing info.
+     * 
      * @param addressBook - current dictionary of addressBook
      * @param sc
-     * @param name - key used for map
+     * @param name        - key used for map
      * @return addressBook.
      */
     public static Map<String, List<Object>> editAddressInfo(Map<String, List<Object>> addressBook, Scanner sc,
@@ -173,5 +173,9 @@ public class AddressBookMain {
 
         return addressBook;
 
+    }
+
+    public static boolean checkingForEquals(Map<String, List<Object>> addressBook) {
+        return addressBook.keySet().size() != addressBook.keySet().stream().distinct().count();
     }
 }
