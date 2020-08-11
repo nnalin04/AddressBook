@@ -13,7 +13,7 @@ public class AddressBookMain {
 
         System.out.println("\nWelcome to AddressBook");
 
-        Map<String, Person> addressBook = new HashMap<>();
+        Map<String, Person> addressBook = new TreeMap<>();
 
         System.out.println("\nwant to edit the Address Book");
         System.out.println("enter true for Yes or false for No");
@@ -26,13 +26,57 @@ public class AddressBookMain {
             System.out.println("there are duplicate name");
         }
 
-        sortingAddressBook(addressBook, sc);
+        System.out.println("\nwant to view by choice  of city or state");
+        System.out.println("enter true for Yes or false for No");
+        boolean viewChoice = sc.nextBoolean();
+        if (viewChoice) {
+        viewByChoice(addressBook,sc);
+        }
 
+        System.out.println("\nwant to sort by different method ");
+        System.out.println("enter true for Yes or false for No");
+        boolean SortingChoice = sc.nextBoolean();
+        if (SortingChoice) {
+        sortingAddressBook(addressBook, sc);
+        }else{
+            printingAddressBook(addressBook);
+        }
+
+    }
+
+    private static void viewByChoice(Map<String, Person> addressBook, Scanner sc) {
+        System.out.println("Enter 'C' for city");
+        System.out.println("Enter 'S' for State");
+        sc.nextLine();
+        char choice = sc.next().charAt(0);
+        if(choice == 'C'){
+            System.out.println("enter city");
+            sc.nextLine();
+            String city = sc.nextLine();
+            for (String name : addressBook.keySet()){
+                Person person = addressBook.get(name);
+                boolean result = person.getCity().equals(city);
+                if(result){
+                    System.out.println(person);
+                }
+            }
+        }else{
+            System.out.println("enter state");
+            sc.nextLine();
+            String state = sc.nextLine();
+            for (String name : addressBook.keySet()){
+                Person person = addressBook.get(name);
+                boolean result = person.getState().equals(state);
+                if(result){
+                    System.out.println(person);
+                }
+            }
+        }
     }
 
     private static void sortingAddressBook(Map<String, Person> addressBook, Scanner sc) {
 
-        Map<String, Person> sorted = null;
+        Map<String, Person> sorted = addressBook;
 
         System.out.println("What way do you want to sort");
         System.out.println("Alphabetically - 'A' ");
@@ -42,11 +86,6 @@ public class AddressBookMain {
 
         char choice = sc.next().charAt(0);
         switch (choice) {
-            case 'A':
-                sorted = new TreeMap<>(addressBook);
-
-                printingAddressBook(sorted);
-                break;
             case 'C':
                 sorted = addressBook.entrySet().stream().sorted()
                         .collect(toMap(e -> e.getKey(), e -> e.getValue().getCity(), (e1, e2) -> (String) e2, LinkedHashMap::new));
@@ -62,20 +101,8 @@ public class AddressBookMain {
             default:
         }
 
-        Map<String, Person> addressBook1 = new TreeMap<>(addressBook);
-
         printingAddressBook(sorted);
 
-    }
-
-    private static void sortUsing(Map<String, Person> addressBook, char value) {
-
-
-
-        Map<String, Integer> sorted = addressBook.entrySet().stream().sorted(comparingByValue())
-                .collect(toMap(e -> e.getKey(), e -> e.getValue().get, (e1, e2) -> e2, LinkedHashMap::new));
-
-        
     }
 
     private static void printingAddressBook(Map<String, Person> addressBook) {
