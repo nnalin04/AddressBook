@@ -10,7 +10,7 @@ public class AddressBookMain {
 
         System.out.println("\nWelcome to AddressBook");
 
-        Map<String, List<Object>> addressBook = new HashMap<>();
+        Map<String, Person> addressBook = new HashMap<>();
 
         System.out.println("\nwant to edit the Address Book");
         System.out.println("enter true for Yes or false for No");
@@ -21,6 +21,15 @@ public class AddressBookMain {
 
         checkingForEquals(addressBook);
 
+        printingAddressBook(addressBook);
+
+    }
+
+    private static void printingAddressBook(Map<String, Person> addressBook) {
+        for (String name: addressBook.keySet()){
+            Person person = addressBook.get(name);
+            System.out.println(person);
+        }        
     }
 
     /**
@@ -29,7 +38,7 @@ public class AddressBookMain {
      * @param addressBook map containing the info of the contact Person
      * @return addressBook
      */
-    public static Map<String, List<Object>> editingAddressBook(Map<String, List<Object>> addressBook, Scanner sc) {
+    public static Map<String, Person> editingAddressBook(Map<String, Person> addressBook, Scanner sc) {
 
         System.out.println("If you want to Add something enter \'A\'");
         System.out.println("If you want to edit the existing record enter \'E\'");
@@ -67,7 +76,7 @@ public class AddressBookMain {
      * @param sc
      * @return addressBook with the new person.
      */
-    public static Map<String, List<Object>> addPerson(Map<String, List<Object>> addressBook, Scanner sc) {
+    public static Map<String, Person> addPerson(Map<String, Person> addressBook, Scanner sc) {
         System.out.println("\nEnter the record accordingly as asked");
 
         System.out.print("\nfirstName :- ");
@@ -94,15 +103,11 @@ public class AddressBookMain {
 
         Person person = new Person(firstName, lastName, address, city, state, zip, phone);
 
-        List<Object> ContactPerson = new ArrayList<>();
-        ContactPerson.add(person);
-
         String name = firstName + " " + lastName;
 
-        addressBook.put(name, ContactPerson);
+        addressBook.put(name, person);
 
         return addressBook;
-
     }
 
     /**
@@ -113,9 +118,9 @@ public class AddressBookMain {
      * @param name        - key used for map
      * @return addressBook.
      */
-    public static Map<String, List<Object>> editAddressInfo(Map<String, List<Object>> addressBook, Scanner sc,
-            String name) {
-        List<Object> contactInfo = new ArrayList<>(addressBook.get(name));
+    public static Map<String, Person> editAddressInfo(Map<String, Person> addressBook, Scanner sc,
+                                                      String name) {
+       Person contactInfo = (Person) addressBook.get(name);
 
         System.out.println("What do you want to edit");
         System.out.println("Enter \"1\" for address");
@@ -130,35 +135,35 @@ public class AddressBookMain {
                 System.out.println("Enter the new address");
                 sc.nextLine();
                 String newAddress = sc.nextLine();
-                contactInfo.set(2, newAddress);
+                contactInfo.setAddress(newAddress);
                 addressBook.replace(name, contactInfo);
                 break;
             case 2:
                 System.out.println("Enter the new city");
                 sc.nextLine();
                 String newCity = sc.nextLine();
-                contactInfo.set(3, newCity);
+                contactInfo.setCity(newCity);
                 addressBook.put(name, contactInfo);
                 break;
             case 3:
                 System.out.println("Enter the new state");
                 sc.nextLine();
                 String newState = sc.nextLine();
-                contactInfo.set(4, newState);
+                contactInfo.setState(newState);
                 addressBook.replace(name, contactInfo);
                 break;
             case 4:
                 System.out.println("Enter the new zip");
                 sc.nextLine();
                 Integer newZip = sc.nextInt();
-                contactInfo.set(5, newZip);
+                contactInfo.setZip(newZip);
                 addressBook.replace(name, contactInfo);
                 break;
             case 5:
                 System.out.println("Enter the new phone");
                 sc.nextLine();
                 Long newPhone = sc.nextLong();
-                contactInfo.set(6, newPhone);
+                contactInfo.setPhone(newPhone);
                 addressBook.replace(name, contactInfo);
                 break;
             default:
@@ -175,7 +180,7 @@ public class AddressBookMain {
 
     }
 
-    public static boolean checkingForEquals(Map<String, List<Object>> addressBook) {
+    public static boolean checkingForEquals(Map<String, Person> addressBook) {
         return addressBook.keySet().size() != addressBook.keySet().stream().distinct().count();
     }
 }
