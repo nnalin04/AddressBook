@@ -21,7 +21,15 @@ public class AddressBookMain {
 
         checkingForEquals(addressBook);
 
-        printingAddressBook(addressBook);
+        sortingAddressBook(addressBook);
+
+    }
+
+    private static void sortingAddressBook(Map<String, Person> addressBook) {
+
+        Map<String,Person> addressBook1 = new TreeMap<>(addressBook);
+
+        printingAddressBook(addressBook1);
 
     }
 
@@ -120,7 +128,7 @@ public class AddressBookMain {
      */
     public static Map<String, Person> editAddressInfo(Map<String, Person> addressBook, Scanner sc,
                                                       String name) {
-       Person contactInfo = (Person) addressBook.get(name);
+       Person contactInfo = addressBook.get(name);
 
         System.out.println("What do you want to edit");
         System.out.println("Enter \"1\" for address");
