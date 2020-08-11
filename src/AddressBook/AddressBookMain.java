@@ -2,6 +2,9 @@ package AddressBook;
 
 import java.util.*;
 
+import static java.util.Map.Entry.comparingByValue;
+import static java.util.stream.Collectors.toMap;
+
 public class AddressBookMain {
 
     public static void main(String[] args) {
@@ -19,25 +22,67 @@ public class AddressBookMain {
             addressBook = editingAddressBook(addressBook, sc);
         }
 
-        checkingForEquals(addressBook);
+        if (!checkingForEquals(addressBook)) {
+            System.out.println("there are duplicate name");
+        }
 
-        sortingAddressBook(addressBook);
+        sortingAddressBook(addressBook, sc);
 
     }
 
-    private static void sortingAddressBook(Map<String, Person> addressBook) {
+    private static void sortingAddressBook(Map<String, Person> addressBook, Scanner sc) {
 
-        Map<String,Person> addressBook1 = new TreeMap<>(addressBook);
+        Map<String, Person> sorted = null;
 
-        printingAddressBook(addressBook1);
+        System.out.println("What way do you want to sort");
+        System.out.println("Alphabetically - 'A' ");
+        System.out.println("city - 'C' ");
+        System.out.println("state - 'S' ");
+        System.out.println("zip - 'Z' ");
 
+        char choice = sc.next().charAt(0);
+        switch (choice) {
+            case 'A':
+                sorted = new TreeMap<>(addressBook);
+
+                printingAddressBook(sorted);
+                break;
+            case 'C':
+                sorted = addressBook.entrySet().stream().sorted()
+                        .collect(toMap(e -> e.getKey(), e -> e.getValue().getCity(), (e1, e2) -> (String) e2, LinkedHashMap::new));
+                break;
+            case 'S':
+                sorted = addressBook.entrySet().stream().sorted()
+                        .collect(toMap(e -> e.getKey(), e -> e.getValue().getState(), (e1, e2) -> (String) e2, LinkedHashMap::new));
+                break;
+            case 'Z':
+                sorted = addressBook.entrySet().stream().sorted()
+                        .collect(toMap(e -> e.getKey(), e -> e.getValue().getZip(), (e1, e2) -> (Integer) e2, LinkedHashMap::new));
+                break;
+            default:
+        }
+
+        Map<String, Person> addressBook1 = new TreeMap<>(addressBook);
+
+        printingAddressBook(sorted);
+
+    }
+
+    private static void sortUsing(Map<String, Person> addressBook, char value) {
+
+
+
+        Map<String, Integer> sorted = addressBook.entrySet().stream().sorted(comparingByValue())
+                .collect(toMap(e -> e.getKey(), e -> e.getValue().get, (e1, e2) -> e2, LinkedHashMap::new));
+
+        
     }
 
     private static void printingAddressBook(Map<String, Person> addressBook) {
-        for (String name: addressBook.keySet()){
+        for (String name : addressBook.keySet()) {
             Person person = addressBook.get(name);
             System.out.println(person);
-        }        
+        }
     }
 
     /**
@@ -79,7 +124,7 @@ public class AddressBookMain {
 
     /**
      * function to add a person in an addressBook.
-     * 
+     *
      * @param addressBook
      * @param sc
      * @return addressBook with the new person.
@@ -120,15 +165,14 @@ public class AddressBookMain {
 
     /**
      * function to edit the existing info.
-     * 
+     *
      * @param addressBook - current dictionary of addressBook
      * @param sc
      * @param name        - key used for map
      * @return addressBook.
      */
-    public static Map<String, Person> editAddressInfo(Map<String, Person> addressBook, Scanner sc,
-                                                      String name) {
-       Person contactInfo = addressBook.get(name);
+    public static Map<String, Person> editAddressInfo(Map<String, Person> addressBook, Scanner sc, String name) {
+        Person contactInfo = addressBook.get(name);
 
         System.out.println("What do you want to edit");
         System.out.println("Enter \"1\" for address");
