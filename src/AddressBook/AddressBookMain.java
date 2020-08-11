@@ -31,6 +31,7 @@ public class AddressBookMain {
 
         System.out.println("If you want to Add something enter \'A\'");
         System.out.println("If you want to edit the existing record enter \'E\'");
+        System.out.println("If you want to delete an existing record enter \'D\'");
         char editChoice = sc.next().charAt(0);
         if (editChoice == 'A') {
             addPerson(addressBook, sc);
@@ -39,6 +40,11 @@ public class AddressBookMain {
             sc.nextLine();
             String name = sc.nextLine();
             editAddressInfo(addressBook, sc, name);
+        }else if(editChoice == 'D'){
+            System.out.println("whose info you want to delete");
+            sc.nextLine();
+            String name = sc.nextLine();
+            addressBook.remove(name);
         }
 
         System.out.println("want to do more any more changes in the Address Book");
