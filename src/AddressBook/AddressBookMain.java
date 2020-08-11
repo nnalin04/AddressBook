@@ -12,49 +12,57 @@ public class AddressBookMain {
 
         Map<String, List<Object>> addressBook = new TreeMap<>();
 
-        editingAddressBook(addressBook, sc);
+        System.out.println("\nwant to edit the Address Book");
+        System.out.println("enter true for Yes or false for No");
+        boolean choice = sc.nextBoolean();
+        if (choice) {
+            editingAddressBook(addressBook, sc);
+        }
 
     }
 
     /**
      * function to decide if we want to edit something in the address book.
-     * 
+     *
      * @param addressBook map containing the info of the contact Person
      * @return addressBook
      */
     private static Map<String, List<Object>> editingAddressBook(Map<String, List<Object>> addressBook, Scanner sc) {
 
-        System.out.println("\nwant to edit the Address Book");
-        System.out.println("enter true for Yes or false for No");
-        boolean choice = sc.nextBoolean();
-        if (choice) {
+        System.out.println("If you want to Add something enter \'A\'");
+        System.out.println("If you want to edit the existing record enter \'E\'");
+        char editChoice = sc.next().charAt(0);
+        if (editChoice == 'A') {
+            addPerson(addressBook, sc);
+        } else if (editChoice == 'E') {
+            System.out.println("whose info you want to change");
+            sc.nextLine();
+            String name = sc.nextLine();
+            editAddressInfo(addressBook, sc, name);
+        }
 
-            System.out.println("If you want to Add something enter true");
-            System.out.println("If you want to edit the existing record enter false");
-            boolean editChoice = sc.nextBoolean();
-            if (editChoice) {
-                addPerson(addressBook, sc);
-            } else {
-                System.out.println("whose info you want to change");
-                String name = sc.nextLine();
-                editAddressBook(addressBook, sc, name);
-            }
+        System.out.println("want to do more any more changes in the Address Book");
+        System.out.println("enter \'Y\' for Yes or \'N\' for No");
+        char continueChoice = sc.next().charAt(0);
 
-            System.out.println("want to do more editing");
-            System.out.println("enter \"Y\" for Yes or \"N\" for No");
-            boolean continueChoice = sc.nextBoolean();
-            if (continueChoice) {
-                editingAddressBook(addressBook, sc);
-            }
+        if (continueChoice == 'Y') {
+            editingAddressBook(addressBook, sc);
         }
 
         return addressBook;
     }
 
+    /**
+     * function to add a person in an addressBook.
+     * @param addressBook
+     * @param sc
+     * @return addressBook with the new person.
+     */
     public static Map<String, List<Object>> addPerson(Map<String, List<Object>> addressBook, Scanner sc) {
         System.out.println("\nEnter the record accordingly as asked");
 
         System.out.print("\nfirstName :- ");
+        sc.nextLine();
         String firstName = sc.nextLine();
 
         System.out.print("\nlastName :- ");
@@ -73,7 +81,7 @@ public class AddressBookMain {
         Integer zip = sc.nextInt();
 
         System.out.print("\nPhone :- ");
-        Integer phone = sc.nextInt();
+        Long phone = sc.nextLong();
 
         List<Object> ContactPerson = new ArrayList<>();
         ContactPerson.add(firstName);
@@ -92,8 +100,16 @@ public class AddressBookMain {
 
     }
 
-    public static Map<String, List<Object>> editAddressBook(Map<String, List<Object>> addressBook, Scanner sc,
+    /**
+     * function to edit the existing info.
+     * @param addressBook - current dictionary of addressBook
+     * @param sc
+     * @param name - key used for map
+     * @return addressBook.
+     */
+    public static Map<String, List<Object>> editAddressInfo(Map<String, List<Object>> addressBook, Scanner sc,
             String name) {
+        List<Object> contactInfo = new ArrayList<>(addressBook.get(name));
 
         System.out.println("What do you want to edit");
         System.out.println("Enter \"1\" for address");
@@ -106,37 +122,47 @@ public class AddressBookMain {
         switch (choice) {
             case 1:
                 System.out.println("Enter the new address");
+                sc.nextLine();
                 String newAddress = sc.nextLine();
-                addressBook.put(name, (List<Object>) addressBook.get(name).set(2, newAddress));
+                contactInfo.set(2, newAddress);
+                addressBook.replace(name, contactInfo);
                 break;
             case 2:
                 System.out.println("Enter the new city");
+                sc.nextLine();
                 String newCity = sc.nextLine();
-                addressBook.put(name, (List<Object>) addressBook.get(name).set(2, newCity));
+                contactInfo.set(3, newCity);
+                addressBook.put(name, contactInfo);
                 break;
             case 3:
                 System.out.println("Enter the new state");
+                sc.nextLine();
                 String newState = sc.nextLine();
-                addressBook.put(name, (List<Object>) addressBook.get(name).set(2, newState));
+                contactInfo.set(4, newState);
+                addressBook.replace(name, contactInfo);
                 break;
             case 4:
                 System.out.println("Enter the new zip");
+                sc.nextLine();
                 Integer newZip = sc.nextInt();
-                addressBook.put(name, (List<Object>) addressBook.get(name).set(2, newZip));
+                contactInfo.set(5, newZip);
+                addressBook.replace(name, contactInfo);
                 break;
             case 5:
                 System.out.println("Enter the new phone");
-                Integer newPhone = sc.nextInt();
-                addressBook.put(name, (List<Object>) addressBook.get(name).set(2, newPhone));
+                sc.nextLine();
+                Long newPhone = sc.nextLong();
+                contactInfo.set(6, newPhone);
+                addressBook.replace(name, contactInfo);
                 break;
             default:
                 // code block
         }
         System.out.println("want to do more editing");
         System.out.println("enter \"Y\" for Yes or \"N\" for No");
-        String continueChoice = sc.nextLine();
-        if (continueChoice == "Y") {
-            editAddressBook(addressBook, sc, name);
+        char continueChoice = sc.nextLine().charAt(0);
+        if (continueChoice == 'Y') {
+            editAddressInfo(addressBook, sc, name);
         }
 
         return addressBook;
