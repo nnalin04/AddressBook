@@ -42,6 +42,60 @@ public class AddressBookMain {
             printingAddressBook(addressBook);
         }
 
+        grtSinglePersonInfo(addressBook, sc);
+
+    }
+
+    /**
+     * function to search person in city or state.
+     * @param addressBook
+     * @param sc
+     * @return
+     */
+    private static void grtSinglePersonInfo(Map<String, Person> addressBook, Scanner sc) {
+
+        System.out.println("Enter 'C' for city");
+        System.out.println("Enter 'S' for State");
+        sc.nextLine();
+        char choice = sc.next().charAt(0);
+        if(choice == 'C'){
+            Map<String, Person> cityAddressBook = new TreeMap<>();
+            System.out.println("enter city");
+            sc.nextLine();
+            String city = sc.nextLine();
+            for (String keyName : addressBook.keySet()){
+                Person person = addressBook.get(keyName);
+                boolean res = person.getCity().equals(city);
+                if(res){
+                    cityAddressBook.put(keyName,person);
+                }
+            }
+            System.out.println("enter name to find");
+            sc.nextLine();
+            String name = sc.nextLine();
+            if(cityAddressBook.containsKey(name)){
+                System.out.println("person is present");
+            }
+
+        }else{
+            Map<String, Person> stateAddressBook = new TreeMap<>();
+            System.out.println("enter state");
+            sc.nextLine();
+            String state = sc.nextLine();
+            for (String name : addressBook.keySet()){
+                Person person = addressBook.get(name);
+                boolean res = person.getState().equals(state);
+                if(res){
+                    stateAddressBook.put(name,person);
+                }
+            }
+            System.out.println("enter name to find");
+            sc.nextLine();
+            String name = sc.nextLine();
+            if(stateAddressBook.containsKey(name)){
+                System.out.println("person is present");
+            }
+        }
     }
 
     private static void viewByChoice(Map<String, Person> addressBook, Scanner sc) {
