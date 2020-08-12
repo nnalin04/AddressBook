@@ -269,7 +269,7 @@ public class AddressBookMain {
                 sc.nextLine();
                 String newAddress = sc.nextLine();
                 contactInfo.setAddress(newAddress);
-                addressBook.replace(name, contactInfo);
+                addressBook.put(name, contactInfo);
                 break;
             case 2:
                 System.out.println("Enter the new city");
@@ -283,21 +283,21 @@ public class AddressBookMain {
                 sc.nextLine();
                 String newState = sc.nextLine();
                 contactInfo.setState(newState);
-                addressBook.replace(name, contactInfo);
+                addressBook.put(name, contactInfo);
                 break;
             case 4:
                 System.out.println("Enter the new zip");
                 sc.nextLine();
                 Integer newZip = sc.nextInt();
                 contactInfo.setZip(newZip);
-                addressBook.replace(name, contactInfo);
+                addressBook.put(name, contactInfo);
                 break;
             case 5:
                 System.out.println("Enter the new phone");
                 sc.nextLine();
                 Long newPhone = sc.nextLong();
                 contactInfo.setPhone(newPhone);
-                addressBook.replace(name, contactInfo);
+                addressBook.put(name, contactInfo);
                 break;
             default:
                 // code block
